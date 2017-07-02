@@ -18,8 +18,8 @@ var config = {
 				},
 				{
 					type:'component',
-					componentName: 'chat',
-					title: 'chat: monstercat (mixer)',
+					componentName: 'stream',
+					title: 'stream: monstercat (mixer)',
 					componentState: { channel: 'monstercat', service: 'mixer' }
 				}]
 			},
@@ -40,8 +40,8 @@ var config = {
 				},
 				{
 					type:'component',
-					componentName: 'stream',
-					title: 'stream: monstercat (mixer)',
+					componentName: 'chat',
+					title: 'chat: monstercat (mixer)',
 					componentState: { channel: 'monstercat', service: 'mixer' }
 				}]
 			}
@@ -50,7 +50,7 @@ var config = {
 };
 
 if(window.location.hash !== '') {
-	config = b64DecodeUnicode(JSON.parse(window.location.hash));
+	config = JSON.parse(b64DecodeUnicode(window.location.hash.substring(1)));
 } else if(localStorage.multistream_layout) {
 	config = JSON.parse(localStorage.multistream_layout);
 }
