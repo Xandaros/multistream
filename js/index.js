@@ -49,7 +49,9 @@ var config = {
 	}]
 };
 
-if(localStorage.multistream_layout) {
+if(window.location.hash !== '') {
+	config = b64DecodeUnicode(JSON.parse(window.location.hash));
+} else if(localStorage.multistream_layout) {
 	config = JSON.parse(localStorage.multistream_layout);
 }
 
@@ -93,9 +95,28 @@ function addTab(newTabConfig) {
 	else streamLayout.root.addChild(newTabConfig);
 }
 
+function b64EncodeUnicode(str) {
+	// first we use encodeURIComponent to get percent-encoded UTF-8,
+	// then we convert the percent encodings into raw bytes which
+	// can be fed into btoa.
+	return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+		function toSolidBytes(match, p1) {
+			return String.fromCharCode('0x' + p1);
+	}));
+}
+
+function b64DecodeUnicode(str) {
+	// Going backwards: from bytestream, to percent-encoding, to original string.
+	return decodeURIComponent(atob(str).split('').map(function(c) {
+		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+	}).join(''));
+}
+
 streamLayout.on( 'stateChanged', function(){
 	var state = JSON.stringify( streamLayout.toConfig() );
 	localStorage.setItem( 'multistream_layout', state );
+
+	window.location.hash = b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) );
 });
 
 
