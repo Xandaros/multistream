@@ -37,6 +37,9 @@ var streamLayout = new GoldenLayout( config );
 
 streamLayout.registerComponent( 'stream', function( container, state ){
   switch(state.service) {
+    case 'youtube':
+      container.getElement().append($('<iframe allowfullscreen src="https://gaming.youtube.com/embed/'+state.channel+'?autoplay=1" frameborder="0" scrolling="no"></iframe>'));
+      break;
     case 'twitch':
       container.getElement().append($('<iframe allowfullscreen src="http://player.twitch.tv/?channel='+state.channel.toLowerCase()+'&html5" frameborder="0" scrolling="no"></iframe>'));
       break;
@@ -44,13 +47,16 @@ streamLayout.registerComponent( 'stream', function( container, state ){
       container.getElement().append($('<iframe allowfullscreen src="https://mixer.com/embed/player/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
       break;
     default:
-      console.log(service);
+      console.log('Invalid service');
   }
 });
 streamLayout.registerComponent( 'chat', function( container, state ){
   switch(state.service) {
+    case 'youtube':
+      container.getElement().append($('<iframe allowfullscreen src="https://gaming.youtube.com/live_chat?v='+state.channel+'&embed_domain='+window.location.host+'" frameborder="0" scrolling="no"></iframe>'));
+      break;
     case 'twitch':
-      container.getElement().append($('<iframe src="http://www.twitch.tv/'+state.channel.toLowerCase()+'/chat?popout=" frameborder="0" scrolling="no"></iframe>'));
+      container.getElement().append($('<iframe src="http://www.twitch.tv/'+state.channel.toLowerCase()+'/chat?darkpopout" frameborder="0" scrolling="no"></iframe>'));
       break;
     case 'mixer':
       container.getElement().append($('<iframe src="https://mixer.com/embed/chat/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
@@ -89,41 +95,55 @@ $(document).contextmenu({
 		taphold: true,
 		menu: [
 			{title: 'Add stream...', children: [
-				{title: 'Twitch', service: 'twitch', cmd: 's' },
-				{title: 'Mixer', service: 'mixer', cmd: 's' }
+				{title: 'YouTube', cmd: 'ys' },
+				{title: 'Twitch', cmd: 'ts' },
+				{title: 'Mixer', cmd: 'ms' }
 			] },
 			{title: 'Add chat...', children: [
-				{title: 'Twitch', service: 'twitch', cmd: 'c' },
-				{title: 'Mixer', service: 'mixer', cmd: 'c' }
+				{title: 'YouTube', cmd: 'yc' },
+				{title: 'Twitch', cmd: 'tc' },
+				{title: 'Mixer', cmd: 'mc' }
 			] },
 			{title: 'Add stream+chat...', children: [
-				{title: 'Twitch', service: 'twitch', cmd: 's+c' },
-				{title: 'Mixer', service: 'mixer', cmd: 's+c' }
+				{title: 'YouTube', cmd: 'ys+c' },
+				{title: 'Twitch', cmd: 'ts+c' },
+				{title: 'Mixer', cmd: 'ms+c' }
 			] }
 		],
 		// Handle menu selection to implement a fake-clipboard
 		select: function(event, ui) {
-			var channel = prompt('Channel to add');
-			if(channel === undefined || channel === '') {
-				return
-			}
 			var $target = ui.target;
 			for(var i=0;i<ui.cmd.length;++i) {
 				var cmd = ui.cmd[i];
-				if(cmd=='s') {
+				if(cmd == 'y') {
+					var service = 'youtube';
+					var channel = prompt('Youtube stream ID');
+				}
+				else if(cmd == 't') {
+					var service = 'twitch';
+					var channel = prompt('Channel to add');
+				}
+				else if(cmd == 'm') {
+					var service = 'mixer';
+					var channel = prompt('Channel to add');
+				}
+				if(channel === undefined || channel === '') {
+					return;
+				}
+				if(cmd == 's') {
 					addTab({
 						type:'component',
 						componentName: 'stream',
-						title: 'stream: '+channel+' ('+ui.service+')',
-						componentState: { channel: channel, service: ui.service }
+						title: 'stream: '+channel+' ('+service+')',
+						componentState: { channel: channel, service: service }
 					});
 				}
-				else if(cmd=='c') {
+				else if(cmd == 'c') {
 					addTab({
 						type:'component',
 						componentName: 'chat',
-						title: 'chat: '+channel+' ('+ui.service+')',
-						componentState: { channel: channel, service: ui.service }
+						title: 'chat: '+channel+' ('+service+')',
+						componentState: { channel: channel, service: service }
 					});
 				}
 			}
