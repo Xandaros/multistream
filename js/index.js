@@ -127,7 +127,7 @@ $(document).contextmenu({
 					var service = 'mixer';
 					var channel = prompt('Channel to add');
 				}
-				if(channel === undefined || channel === '') {
+				if(channel === undefined || channel === null || channel === '') {
 					return;
 				}
 				if(cmd == 's') {
