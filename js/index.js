@@ -38,13 +38,13 @@ var streamLayout = new GoldenLayout( config );
 streamLayout.registerComponent( 'stream', function( container, state ){
   switch(state.service) {
     case 'youtube':
-      container.getElement().append($('<iframe allowfullscreen src="https://gaming.youtube.com/embed/'+state.channel+'?autoplay=1" frameborder="0" scrolling="no"></iframe>'));
+      container.getElement().append($('<iframe allowfullscreen src="//gaming.youtube.com/embed/'+state.channel+'?autoplay=1" frameborder="0" scrolling="no"></iframe>'));
       break;
     case 'twitch':
-      container.getElement().append($('<iframe allowfullscreen src="http://player.twitch.tv/?channel='+state.channel.toLowerCase()+'&html5" frameborder="0" scrolling="no"></iframe>'));
+      container.getElement().append($('<iframe allowfullscreen src="//player.twitch.tv/?channel='+state.channel.toLowerCase()+'&html5" frameborder="0" scrolling="no"></iframe>'));
       break;
     case 'mixer':
-      container.getElement().append($('<iframe allowfullscreen src="https://mixer.com/embed/player/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
+      container.getElement().append($('<iframe allowfullscreen src="//mixer.com/embed/player/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
       break;
     default:
       console.log('Invalid service');
@@ -53,13 +53,13 @@ streamLayout.registerComponent( 'stream', function( container, state ){
 streamLayout.registerComponent( 'chat', function( container, state ){
   switch(state.service) {
     case 'youtube':
-      container.getElement().append($('<iframe allowfullscreen src="https://gaming.youtube.com/live_chat?v='+state.channel+'&embed_domain='+window.location.host+'" frameborder="0" scrolling="no"></iframe>'));
+      container.getElement().append($('<iframe allowfullscreen src="//gaming.youtube.com/live_chat?v='+state.channel+'&embed_domain='+window.location.host+'" frameborder="0" scrolling="no"></iframe>'));
       break;
     case 'twitch':
-      container.getElement().append($('<iframe src="http://www.twitch.tv/'+state.channel.toLowerCase()+'/chat?darkpopout" frameborder="0" scrolling="no"></iframe>'));
+      container.getElement().append($('<iframe src="//www.twitch.tv/'+state.channel.toLowerCase()+'/chat?darkpopout" frameborder="0" scrolling="no"></iframe>'));
       break;
     case 'mixer':
-      container.getElement().append($('<iframe src="https://mixer.com/embed/chat/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
+      container.getElement().append($('<iframe src="//mixer.com/embed/chat/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
       break;
     default:
       console.log('Invalid service');
@@ -73,18 +73,10 @@ function addTab(newTabConfig) {
 	else streamLayout.root.addChild(newTabConfig);
 }
 
-var layoutChanged = false;
 streamLayout.on( 'stateChanged', function(){
-	layoutChanged = true;
+	var state = JSON.stringify( streamLayout.toConfig() );
+	localStorage.setItem( 'multistream_layout', state );
 });
-function saveState() {
-	if(layoutChanged) {
-		var state = JSON.stringify( streamLayout.toConfig() );
-		localStorage.setItem( 'multistream_layout', state );
-		layoutChanged = false;
-	}
-}
-setInterval(saveState,5000);
 
 
 $(document).contextmenu({
