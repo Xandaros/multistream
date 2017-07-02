@@ -115,8 +115,12 @@ function b64DecodeUnicode(str) {
 streamLayout.on( 'stateChanged', function(){
 	var state = JSON.stringify( streamLayout.toConfig() );
 	localStorage.setItem( 'multistream_layout', state );
-
-	window.location.hash = b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) );
+	if(history.pushState) {
+		history.pushState(null, null, '#'+b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) ));
+	}
+	else {
+	    location.hash = b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) );
+	}
 });
 
 
