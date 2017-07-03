@@ -57,6 +57,9 @@ streamLayout.registerComponent( 'stream', function( container, state ){
   case 'smashcast':
     container.getElement().append($('<iframe allowfullscreen src="//www.smashcast.tv/embed/'+state.channel.toLowerCase()+'?autoplay=true" frameborder="0" scrolling="no"></iframe>'));
     break;
+  case 'mobcrush':
+    container.getElement().append($('<iframe allowfullscreen src="//www.mobcrush.com/'+state.channel.toLowerCase()+'/embed" frameborder="0" scrolling="no"></iframe>'));
+    break;
   default:
     console.log('Invalid service');
   }
@@ -74,6 +77,9 @@ streamLayout.registerComponent( 'chat', function( container, state ){
     break;
   case 'smashcast':
     container.getElement().append($('<iframe src="//www.smashcast.tv/embed/chat/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
+    break;
+  case 'mobcrush':
+    container.getElement().append($('<iframe src="//www.mobcrush.com/'+state.channel.toLowerCase()+'/chat" frameborder="0" scrolling="no"></iframe>'));
     break;
   default:
     console.log('Invalid service');
@@ -128,19 +134,22 @@ $(document).contextmenu({
         {title: 'YouTube', cmd: 'ys' },
         {title: 'Twitch', cmd: 'ts' },
         {title: 'Mixer', cmd: 'ms' },
-        {title: 'Smashcast', cmd: 'hs' }
+        {title: 'Smashcast', cmd: 'hs' },
+        {title: 'Mobcrush', cmd: 'rs' }
       ] },
       {title: 'Add chat...', children: [
         {title: 'YouTube', cmd: 'yc' },
         {title: 'Twitch', cmd: 'tc' },
         {title: 'Mixer', cmd: 'mc' },
-        {title: 'Smashcast', cmd: 'hc' }
+        {title: 'Smashcast', cmd: 'hc' },
+        {title: 'Mobcrush', cmd: 'rc' }
       ] },
       {title: 'Add stream+chat...', children: [
         {title: 'YouTube', cmd: 'ysc' },
         {title: 'Twitch', cmd: 'tsc' },
         {title: 'Mixer', cmd: 'msc' },
-        {title: 'Smashcast', cmd: 'hsc' }
+        {title: 'Smashcast', cmd: 'hsc' },
+        {title: 'Mobcrush', cmd: 'rsc' }
       ] }
     ],
 
@@ -162,6 +171,10 @@ $(document).contextmenu({
         }
         else if(cmd == 'h') {
           var service = 'smashcast';
+          var channel = prompt('Channel to add');
+        }
+        else if(cmd == 'r') {
+          var service = 'mobcrush';
           var channel = prompt('Channel to add');
         }
         if(channel === undefined || channel === null || channel === '') {
