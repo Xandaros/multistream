@@ -7,7 +7,16 @@ If you're a normal user you're probably looking for the [working demo](https://m
 ## Usage
 
 Right click a tab then select a stream/chat to add  
-You can move components around or merge them and select the tab of the one you want to look at
+You can move components around or merge them, more info [here](https://golden-layout.com)
+
+## Supported websites
+
+- [YouTube](https://gaming.youtube.com)
+- [Twitch](https://www.twitch.tv)
+- [Mixer](https://mixer.com)
+- [Smashcast](https://www.smashcast.tv)
+- [Mobcrush](https://www.mobcrush.com)
+- [GoodGame](https://goodgame.ru)
 
 ## Credits
 
