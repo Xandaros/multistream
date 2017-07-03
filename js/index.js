@@ -2,35 +2,38 @@ var config = {
   content: [{
     type: 'column',
     content: [
-        {
-          type:'component',
-          componentName: 'stream',
-          title: 'stream: summit1g (twitch)',
-          componentState: { channel: 'summit1g', service: 'twitch' }
-        },
-        {
-          type:'component',
-          componentName: 'stream',
-          title: 'stream: monstercat (mixer)',
-          componentState: { channel: 'monstercat', service: 'mixer' }
-        }]
+    {
+      type: 'row',
+      content:[
+      {
+        type:'component',
+        componentName: 'stream',
+        title: 'stream: summit1g (twitch)',
+        componentState: { channel: 'summit1g', service: 'twitch' }
       },
       {
-        type: 'row',
-        content:[
-        {
-          type:'component',
-          componentName: 'chat',
-          title: 'chat: summit1g (twitch)',
-          componentState: { channel: 'summit1g', service: 'twitch' }
-        },
-        {
-          type:'component',
-          componentName: 'chat',
-          title: 'chat: monstercat (mixer)',
-          componentState: { channel: 'monstercat', service: 'mixer' }
-        }]
-      }
+        type:'component',
+        componentName: 'stream',
+        title: 'stream: monstercat (mixer)',
+        componentState: { channel: 'monstercat', service: 'mixer' }
+      }]
+    },
+    {
+      type: 'row',
+      content:[
+      {
+        type:'component',
+        componentName: 'chat',
+        title: 'chat: summit1g (twitch)',
+        componentState: { channel: 'summit1g', service: 'twitch' }
+      },
+      {
+        type:'component',
+        componentName: 'chat',
+        title: 'chat: monstercat (mixer)',
+        componentState: { channel: 'monstercat', service: 'mixer' }
+      }]
+    }
     ]
   }]
 };
