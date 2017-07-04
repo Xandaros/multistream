@@ -1,3 +1,5 @@
+var apiKey = 'AIzaSyA5xgXNNC6XUP1deX4vMZTiZuJNtxicAjY'; // Used to fetch YouTube channel names, leave this blank if you don't mind seeing the video ID/don't want to get your own API key
+
 var config = {
   content: [{
     type: 'column',
@@ -120,7 +122,6 @@ function b64DecodeUnicode(str) {
 }
 
 streamLayout.on( 'stateChanged', function(){
-  console.log('bip boup');
   var state = JSON.stringify( streamLayout.toConfig() );
   localStorage.setItem( 'multistream_layout', state );
   if(history.pushState) {
@@ -167,11 +168,24 @@ $(document).contextmenu({
 
     select: function(event, ui) {
       var $target = ui.target;
+      var title;
       for(var i=0;i<ui.cmd.length;++i) {
         var cmd = ui.cmd[i];
         if(cmd == 'y') {
           var service = 'youtube';
           var channel = prompt('Youtube stream ID');
+          if(apiKey !== '') {
+            $.ajax({
+              url: 'https://www.googleapis.com/youtube/v3/videos?id='+channel+'&key='+apiKey+'&part=snippet',
+              dataType: 'json',
+              async: false,
+              success: function(data) {
+                if(data.pageInfo.totalResults === 1) {
+                  title = data['items'][0]['snippet']['channelTitle'];
+                }
+              }
+            });
+          }
         }
         else if(cmd == 't') {
           var service = 'twitch';
@@ -196,11 +210,14 @@ $(document).contextmenu({
         if(channel === undefined || channel === null || channel === '') {
           return;
         }
+        if(!title) {
+          title = channel;
+        }
         if(cmd == 's') {
           addTab({
             type:'component',
             componentName: 'stream',
-            title: 'stream: '+channel+' ('+service+')',
+            title: 'stream: '+title+' ('+service+')',
             componentState: { channel: channel, service: service }
           });
         }
@@ -208,7 +225,7 @@ $(document).contextmenu({
           addTab({
             type:'component',
             componentName: 'chat',
-            title: 'chat: '+channel+' ('+service+')',
+            title: 'chat: '+title+' ('+service+')',
             componentState: { channel: channel, service: service }
           });
         }
