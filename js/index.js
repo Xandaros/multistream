@@ -42,8 +42,8 @@ var config = {
 
 if(window.location.hash !== '') {
   config = JSON.parse(b64DecodeUnicode(window.location.hash.substring(1)));
-} else if(localStorage.multistream_layout) {
-  config = JSON.parse(localStorage.multistream_layout);
+} else if(sessionStorage.multistream_layout) {
+  config = JSON.parse(sessionStorage.multistream_layout);
 }
 
 var streamLayout = new GoldenLayout( config );
@@ -123,12 +123,12 @@ function b64DecodeUnicode(str) {
 
 streamLayout.on( 'stateChanged', function(){
   var state = JSON.stringify( streamLayout.toConfig() );
-  localStorage.setItem( 'multistream_layout', state );
+  sessionStorage.setItem( 'multistream_layout', state );
   if(history.pushState) {
     history.pushState(null, null, '#'+b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) ));
   }
   else {
-      location.hash = b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) );
+    location.hash = b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) );
   }
 });
 
