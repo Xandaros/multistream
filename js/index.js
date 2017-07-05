@@ -121,17 +121,22 @@ function b64DecodeUnicode(str) {
   }).join(''));
 }
 
-streamLayout.on( 'stateChanged', function(){
+function saveTheAnimals(hash = true) {
   var state = JSON.stringify( streamLayout.toConfig() );
   sessionStorage.setItem( 'multistream_layout', state );
-  if(history.pushState) {
-    history.pushState(null, null, '#'+b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) ));
+  if(hash) {
+    if(history.pushState) {
+      history.pushState(null, null, '#'+b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) ));
+    }
+    else {
+      location.hash = b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) );
+    }
   }
-  else {
-    location.hash = b64EncodeUnicode( JSON.stringify( streamLayout.toConfig() ) );
-  }
-});
+}
 
+streamLayout.on( 'stateChanged', function(){
+  saveTheAnimals();
+});
 
 $(document).contextmenu({
     delegate: '*',
@@ -163,6 +168,11 @@ $(document).contextmenu({
         {title: 'Smashcast', cmd: 'hsc' },
         {title: 'Mobcrush', cmd: 'rsc' },
         {title: 'GoodGame', cmd: 'gsc' }
+      ] },
+      {title: 'MultiStream settings', children: [
+        {title: 'Tweet layout', cmd: 'u' },
+        {title: streamLayout.config.settings.hasHeaders?'Hide headers':'Show headers', cmd: 'l', },
+        {title: 'Reset', cmd: 'e' }
       ] }
     ],
 
@@ -171,7 +181,22 @@ $(document).contextmenu({
       var title;
       for(var i=0;i<ui.cmd.length;++i) {
         var cmd = ui.cmd[i];
-        if(cmd == 'y') {
+        if(cmd == 'u') {
+          $('<a>').attr('href', 'https://twitter.com/intent/tweet?text=I\'m%20watching%20these%20streams%20via%20%23MultiStream!%20'+window.location.href.replace('#', '%23')).attr('target', '_blank')[0].click();
+        }
+        else if(cmd == 'l') {
+          streamLayout.config.dimensions.headerHeight = 20;
+          streamLayout.config.settings.hasHeaders = !streamLayout.config.settings.hasHeaders;
+          saveTheAnimals(false);
+          history.pushState('', document.title, window.location.pathname);
+          window.location.reload();
+        }
+        else if(cmd == 'e') {
+          sessionStorage.removeItem('multistream_layout');
+          history.pushState('', document.title, window.location.pathname);
+          window.location.reload();
+        }
+        else if(cmd == 'y') {
           var service = 'youtube';
           var channel = prompt('Youtube stream ID');
           if(apiKey !== '') {
