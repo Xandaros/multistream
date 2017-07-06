@@ -17,6 +17,7 @@ You can move components around or merge them, more info [here](https://golden-la
 - [Smashcast](https://www.smashcast.tv)
 - [Mobcrush](https://www.mobcrush.com)
 - [GoodGame](https://goodgame.ru)
+- Anything else that doesn't hate iframes
 
 ## Credits
 

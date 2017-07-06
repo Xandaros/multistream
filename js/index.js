@@ -68,6 +68,9 @@ streamLayout.registerComponent( 'stream', function( container, state ){
   case 'goodgame':
     container.getElement().append($('<iframe allowfullscreen src="//goodgame.ru/player?'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
     break;
+  case 'custom':
+    container.getElement().append($('<iframe src="'+state.channel+'" frameborder="0" scrolling="no"></iframe>'));
+    break;
   default:
     console.log('Invalid service');
   }
@@ -91,6 +94,9 @@ streamLayout.registerComponent( 'chat', function( container, state ){
     break;
   case 'goodgame':
     container.getElement().append($('<iframe src="//goodgame.ru/chat/'+state.channel.toLowerCase()+'/" frameborder="0" scrolling="no"></iframe>'));
+    break;
+  case 'custom':
+    container.getElement().append($('<iframe src="'+state.channel+'" frameborder="0" scrolling="no"></iframe>'));
     break;
   default:
     console.log('Invalid service');
@@ -151,7 +157,8 @@ $(document).contextmenu({
         {title: 'Mixer', cmd: 'ms' },
         {title: 'Smashcast', cmd: 'hs' },
         {title: 'Mobcrush', cmd: 'rs' },
-        {title: 'GoodGame', cmd: 'gs' }
+        {title: 'GoodGame', cmd: 'gs' },
+        {title: 'Custom iframe', cmd: 'as' }
       ] },
       {title: 'Add chat...', children: [
         {title: 'YouTube', cmd: 'yc' },
@@ -159,7 +166,8 @@ $(document).contextmenu({
         {title: 'Mixer', cmd: 'mc' },
         {title: 'Smashcast', cmd: 'hc' },
         {title: 'Mobcrush', cmd: 'rc' },
-        {title: 'GoodGame', cmd: 'gc' }
+        {title: 'GoodGame', cmd: 'gc' },
+        {title: 'Custom iframe', cmd: 'ac' }
       ] },
       {title: 'Add stream+chat...', children: [
         {title: 'YouTube', cmd: 'ysc' },
@@ -231,6 +239,10 @@ $(document).contextmenu({
         else if(cmd == 'g') {
           var service = 'goodgame';
           var channel = prompt('Channel ID');
+        }
+        else if(cmd == 'a') {
+          var service = 'custom';
+          var channel = prompt('URL to embed');
         }
         if(channel === undefined || channel === null || channel === '') {
           return;
