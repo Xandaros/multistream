@@ -60,7 +60,7 @@ streamLayout.registerComponent( 'stream', function( container, state ){
     container.getElement().append($('<iframe allowfullscreen src="//mixer.com/embed/player/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
     break;
   case 'smashcast':
-    container.getElement().append($('<iframe allowfullscreen src="//www.smashcast.tv/embed/'+state.channel.toLowerCase()+'?autoplay=true" frameborder="0" scrolling="no"></iframe>'));
+    container.getElement().append($('<iframe allowfullscreen src="//www.smashcast.tv/embed/'+state.channel.toLowerCase()+'?autoplay" frameborder="0" scrolling="no"></iframe>'));
     break;
   case 'mobcrush':
     container.getElement().append($('<iframe allowfullscreen src="//www.mobcrush.com/'+state.channel.toLowerCase()+'/embed" frameborder="0" scrolling="no"></iframe>'));
@@ -87,7 +87,7 @@ streamLayout.registerComponent( 'chat', function( container, state ){
     container.getElement().append($('<iframe src="//mixer.com/embed/chat/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
     break;
   case 'smashcast':
-    container.getElement().append($('<iframe src="//www.smashcast.tv/embed/chat/'+state.channel.toLowerCase()+'" frameborder="0" scrolling="no"></iframe>'));
+    container.getElement().append($('<iframe src="//www.smashcast.tv/embed/chat/'+state.channel.toLowerCase()+'?autoconnect" frameborder="0" scrolling="no"></iframe>'));
     break;
   case 'mobcrush':
     container.getElement().append($('<iframe src="//www.mobcrush.com/'+state.channel.toLowerCase()+'/chat" frameborder="0" scrolling="no"></iframe>'));
